@@ -1,0 +1,6 @@
+# ignore binary files
+
+obj
+*.o
+*.a
+modes_detection
