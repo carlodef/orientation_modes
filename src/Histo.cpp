@@ -1,11 +1,9 @@
 #include <math.h>
 #include <iostream>
 #include <fstream>
-
-#include "Histo.h"
-
 using namespace std;
 
+#include "Histo.h"
 
 /**
 * Constructors
@@ -101,9 +99,9 @@ float Histo::angle(int bin, int flag_parabola) const
     return -M_PI + x*(2*M_PI/m_L);
 }
 
-void Histo::print(char *file) const
+void Histo::print(string filename) const
 {
-    ofstream flux(file);
+    ofstream flux(filename.c_str());
     for (int i(0); i < m_L; i++)
     {
         flux << m_data[i] << " ";

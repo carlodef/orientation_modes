@@ -1,6 +1,9 @@
 #ifndef HISTO_H_INCLUDED
 #define HISTO_H_INCLUDED
 
+#include <string>
+using namespace std;
+
 class Histo
 {
     public :
@@ -33,7 +36,7 @@ class Histo
     int sum(int a, int b) const;
     float max() const;
     float angle(int bin, int flag_parabola = 0) const;
-    void print(char *file) const;
+    void print(string filename) const;
 
     /**
     * Modifications of the histo
