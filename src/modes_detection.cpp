@@ -166,8 +166,8 @@ Histo histo_orientation(float *im, int nx, int ny, int x, int y, int r, int L, i
 // This is the principal function. It takes as an input the histogram histo, and
 // the parameter epsilon required by the a contrario model. It returns the list of
 // detected modes, concatenated. The list contains the entropy of each mode : if there
-// are two modes [a1,b1] with entropy e1 and [a2,b2] with entropy e2 the the output is
-// the list [a1,b1,e1,a2,b2,e2]
+// are two modes [a1,b1] and [a2,b2] with log_nfa values nfa1 and nfa2 the output is
+// the list [a1,b1,nfa1,a2,b2,nfa2]
 vector<float> max_modes_detection(Histo &histo, float epsilon)
 {
     // Returned list

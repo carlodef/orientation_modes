@@ -1,5 +1,4 @@
 # variables
-CXX = g++
 CXXFLAGS = -std=c++98 -Wall -Wextra -Werror -O3
 
 # compilation 
