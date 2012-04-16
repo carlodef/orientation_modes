@@ -1,6 +1,7 @@
 # ignore binary files
-
-obj
 *.o
 *.a
 modes_detection
+
+# ignore output files in example dir
+example/*.txt
