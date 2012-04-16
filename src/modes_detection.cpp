@@ -32,9 +32,9 @@
  */
 
 #include <iostream>
-#include <math.h>
 #include <fstream>
 #include <vector>
+#include <math.h>
 
 #include "Histo.h"
 #include "modes_detection.h"
