@@ -157,9 +157,7 @@ Histo histo_orientation(float *im, int nx, int ny, int x, int y, int r, int L, i
     // Normalization : the sum of the histogram has to be equal to the number of pixels contributing
     // If M=0, the histogram is empty and there is nothing to do
     if (histo.get_M() > 0)
-    {
         histo *= count/histo.get_M();
-    }
 
     return histo;
 }
@@ -185,17 +183,13 @@ vector<float> max_modes_detection(Histo &histo, float epsilon)
         int **intervals;
         intervals  = new int*[L]; // On ne peut pas faire "new int[L][L]"
         for (int i=0; i<L; i++)
-        {
             intervals[i] = new int[L];
-        }
 
         // L-by-L matrix which will remember the entropy of interval [a,b]
         float **entropy;
         entropy = new float*[L]; // On ne peut pas faire "new float[L][L]"
         for (int i=0; i<L; i++)
-        {
             entropy[i] = new float[L];
-        }
 
         // Computation of the matrix named "intervals"
         browse_intervals(histo,epsilon,intervals,entropy);
@@ -275,18 +269,12 @@ void browse_intervals(Histo &histo, float epsilon, int **intervals, float **entr
             if (e>thresh)
             {
                 if (r>p)
-                {
                     intervals[a][b] = 2;
-                }
                 else
-                {
                     intervals[a][b] = -1;
-                }
             }
             else
-            {
                 intervals[a][b] = 0;
-            }
         }
     }
 }
@@ -303,30 +291,20 @@ void spread_gaps(int L, int **intervals)
         for (int b(0); b<a; b++)
         {
             if (intervals[a][b] < 0)
-            {
                 for (int i(a); i>b; i--)
-                {
                     for (int j(b); j<i; j++)
-                    {
                         intervals[i][j] = 0;
-                    }
-                }
-            }
         }
 
         // second part
         for (int b(a); b<L; b++)
         {
             if (intervals[a][b] < 0)
-            {
                 for (int i(a); i>(b-L); i--)
-                {
                     for (int j(b); j<(i+L); j++)
-                    {
-                        intervals[(i+L) % L][j % L] = 0; // (i+L) instead of i because the modulo operator % doesn't like negative entries
-                    }
-                }
-            }
+                        intervals[(i+L) % L][j % L] = 0; 
+			// (i+L) instead of i because the modulo operator %i
+			// doesn't like negative entries
         }
     }
 }
@@ -357,14 +335,10 @@ void discard_modes(int L, int **intervals, float **entropy)
                             // [i,j] is a sub-mode strictly included in [a,b]
                         {
                             if (entropy[i][j] < e)
-                            {
                                 intervals[i][j] = 1;
-                            }
                             else
-                            {
                                 intervals[a][b] = 1;
-                            }
-                            // [a,b] is not a maximal mode
+                                // [a,b] is not a maximal mode
                         }
                         j--;
                     }
@@ -390,13 +364,9 @@ void discard_modes(int L, int **intervals, float **entropy)
                             // [i,j] is a sub-mode strictly included in [a,b]
                         {
                             if (entropy[i % L][(j+L) % L] < e)
-                            {
                                 intervals[i % L][(j+L) % L] = 1;
-                            }
                             else
-                            {
                                 intervals[a][b] = 1;
-                            }
                         }
                         j--;
                     }
@@ -413,9 +383,8 @@ void discard_modes(int L, int **intervals, float **entropy)
 float compute_entropy(float r, float p)
 {
     if (r==1)
-    {
         return -log(p);
-    }
+    
     float h = r*log(r/p)+(1-r)*log((1-r)/(1-p));
     return h;
 }
@@ -440,23 +409,15 @@ float compute_orientation(Histo &h, int a, int b)
 {
     double theta = 0.0;
     if (a <= b)
-    {
         for (int i(a); i<=b; i++)
-        {
             theta += h.angle(i)*h[i];
-        }
-    }
     else
     {
         // We compute the weighted average mod 2*PI
         for (int i(a); i<h.get_L(); i++)
-        {
             theta += h.angle(i)*h[i];
-        }
         for (int i=0; i<=b; i++)
-        {
             theta += (h.angle(i)+2*M_PI)*h[i];
-        }
     }
 
     theta /= h.sum(a,b);

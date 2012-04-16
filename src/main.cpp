@@ -103,9 +103,8 @@ int main(int c, char *v[])
     float max_histo = h_lowe.max();
 
     for (int i(0); i<n_bins; i++)
-    {
-        if ((h_lowe[i] > 0.8*max_histo) && (h_lowe[i] > h_lowe[i-1]) && (h_lowe[i] > h_lowe[i+1])) {maxima.push_back(i);}
-    }
+        if ((h_lowe[i] > 0.8*max_histo) && (h_lowe[i] > h_lowe[i-1]) && (h_lowe[i] > h_lowe[i+1])) 
+	    maxima.push_back(i);
 
     // Save orientations associated to local maxima
     flux.open("modes_lowe.txt");

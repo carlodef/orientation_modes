@@ -112,7 +112,8 @@ float Histo::max() const
 
 // The parameter 'flag_parabola' can take 2 values : 0 and 1.
 // O : the angle corresponds exactly to bin i
-// 1 : the angle is refined by fitting a parabola on the three values of histogram around the bin
+// 1 : the angle is refined by fitting a parabola on the three values of
+// histogram around the bin
 float Histo::angle(int bin, int flag_parabola) const
 {
     float x, l, m, r;
@@ -150,7 +151,8 @@ void Histo::incr(int bin, float x)
     // Check the arguments
     if (bin < 0 || bin >= m_L)
     {
-        cout << "Histo::incr : parameter 1 has to be an int between 0 and " << (m_L-1) << endl;
+        cout << "Histo::incr : parameter 1 has to be an int between 0 and "
+	     << (m_L-1) << endl;
     }
 
     // Do the job
