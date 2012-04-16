@@ -31,12 +31,10 @@
  * or implied, of the copyright holder.
  */
 
-#include <iostream>
 #include <stdlib.h>
-#include <math.h>
-#include <vector>
-#include <string>
+#include <iostream>
 #include <fstream>
+#include <vector>
 using namespace std;
 
 #include "libpng_io.h"
@@ -50,7 +48,8 @@ int main(int c, char *v[])
     // Parameters loading
     if (c < 7)
     {
-        cout << "Error : missing arguments" << endl;
+        cout << "missing arguments" << endl;
+	cout << "usage: " << v[0] << " image x y r n_bins flag_norm" << endl;
         return 1;
     }
 
