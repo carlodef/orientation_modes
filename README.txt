@@ -1,5 +1,4 @@
 To compile, type:
-cd src
 make
 
 The 'example' folder provides a script 'test.sh' to run the program on the
