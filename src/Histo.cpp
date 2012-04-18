@@ -47,16 +47,14 @@ Histo::Histo() : m_L(0), m_N(1), m_M(0), m_data(0)
 
 Histo::Histo(int L) : m_L(L), m_N(m_L*(m_L-1)+1), m_M(0), m_data(new float[L])
 {
-    for (int i=0; i<L; i++)
-    {
+    for (int i=0; i<L; i++) {
         m_data[i] = 0;
     }
 }
 
 Histo::Histo(const Histo& h) : m_L(h.m_L), m_N(h.m_N), m_M(h.m_M), m_data(0)
 {
-    if (m_L > 0)
-    {
+    if (m_L > 0) {
         m_data = new float[m_L];
         for (int i=0; i < m_L; i++) m_data[i] = h.m_data[i];
     }
@@ -75,10 +73,22 @@ Histo::~Histo()
 /**
 * Accessors
 */
-int Histo::get_L() const {return m_L;}
-int Histo::get_N() const {return m_N;}
-float Histo::get_M() const {return m_M;}
-float *Histo::get_data() const {return m_data;}
+int Histo::get_L() const
+{
+    return m_L;
+}
+int Histo::get_N() const
+{
+    return m_N;
+}
+float Histo::get_M() const
+{
+    return m_M;
+}
+float *Histo::get_data() const
+{
+    return m_data;
+}
 
 
 /**
@@ -87,14 +97,17 @@ float *Histo::get_data() const {return m_data;}
 int Histo::sum(int a, int b) const
 {
     float s(0);
-    if (a <= b)
-    {
-        for (int i=a; i<=b; i++) {s += m_data[i];}
-    }
-    else
-    {
-        for (int i=a; i<m_L; i++) {s += m_data[i];}
-        for (int i=0; i<=b; i++) {s += m_data[i];}
+    if (a <= b) {
+        for (int i=a; i<=b; i++) {
+            s += m_data[i];
+        }
+    } else {
+        for (int i=a; i<m_L; i++) {
+            s += m_data[i];
+        }
+        for (int i=0; i<=b; i++) {
+            s += m_data[i];
+        }
     }
     return s;
 }
@@ -102,9 +115,10 @@ int Histo::sum(int a, int b) const
 float Histo::max() const
 {
     float m(0);
-    for (int i(0); i < m_L; i++)
-    {
-        if (m_data[i] > m) {m=m_data[i];}
+    for (int i(0); i < m_L; i++) {
+        if (m_data[i] > m) {
+            m=m_data[i];
+        }
     }
     return m;
 }
@@ -119,25 +133,31 @@ float Histo::angle(int bin, int flag_parabola) const
     float x, l, m, r;
     if (flag_parabola) {
 
-        if (bin > 0) {l = m_data[bin-1];}
-        else {l = m_data[m_L-1];}
+        if (bin > 0) {
+            l = m_data[bin-1];
+        } else {
+            l = m_data[m_L-1];
+        }
 
         m = m_data[bin];
 
-        if (bin < (m_L-1)) {r = m_data[bin+1];}
-        else {r = m_data[0];}
+        if (bin < (m_L-1)) {
+            r = m_data[bin+1];
+        } else {
+            r = m_data[0];
+        }
 
         x = bin-0.5*(l-r)/(-l+2*m-r);
-        }
-    else {x = bin;}
+    } else {
+        x = bin;
+    }
     return -M_PI + x*(2*M_PI/m_L);
 }
 
 void Histo::print(string filename) const
 {
     ofstream flux(filename.c_str());
-    for (int i(0); i < m_L; i++)
-    {
+    for (int i(0); i < m_L; i++) {
         flux << m_data[i] << " ";
     }
 }
@@ -149,10 +169,9 @@ void Histo::print(string filename) const
 void Histo::incr(int bin, float x)
 {
     // Check the arguments
-    if (bin < 0 || bin >= m_L)
-    {
+    if (bin < 0 || bin >= m_L) {
         cout << "Histo::incr : parameter 1 has to be an int between 0 and "
-	     << (m_L-1) << endl;
+             << (m_L-1) << endl;
     }
 
     // Do the job
@@ -162,8 +181,8 @@ void Histo::incr(int bin, float x)
 
 void Histo::operator*= (float a)
 {
-	if (m_data) for (int j=0; j<m_L ; j++) m_data[j] *= a;
-	m_M *= a;
+    if (m_data) for (int j=0; j<m_L ; j++) m_data[j] *= a;
+    m_M *= a;
 }
 
 /**
@@ -172,16 +191,15 @@ void Histo::operator*= (float a)
 
 int Histo::good_modulus(int n, int p)
 {
-        if (p < 0) return good_modulus(n, -p);
+    if (p < 0) return good_modulus(n, -p);
 
-        int r;
-        if (n >= 0)
-                r = n % p;
-        else
-        {
-                r = p - (-n) % p;
-                if (r == p)
-                        r = 0;
-        }
-        return r;
+    int r;
+    if (n >= 0)
+        r = n % p;
+    else {
+        r = p - (-n) % p;
+        if (r == p)
+            r = 0;
+    }
+    return r;
 }

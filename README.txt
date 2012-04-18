@@ -46,8 +46,7 @@ where
 	r			 is the scale of the keypoint (int)
 	n_bins		 is the number of bins used to build the orientations histogram (int)
 	flag_norm 	 is a flag to decide if the histogram is weighted by the norm
-				 of the gradient (flag=1) or not (flag=0)
-	
+				 of the gradient (flag=1) or not (flag=0)	
 
 The input image is read into a 32bit float array, converted to gray. The output
 files are

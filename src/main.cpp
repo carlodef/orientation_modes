@@ -46,10 +46,9 @@ using namespace std;
 int main(int c, char *v[])
 {
     // Parameters loading
-    if (c < 7)
-    {
+    if (c < 7) {
         cout << "missing arguments" << endl;
-	cout << "usage: " << v[0] << " image x y r n_bins flag_norm" << endl;
+        cout << "usage: " << v[0] << " image x y r n_bins flag_norm" << endl;
         return 1;
     }
 
@@ -81,11 +80,10 @@ int main(int c, char *v[])
 
     // Save modes, orientations and NFA (approximated)
     flux.open("modes_ac.txt");
-    for (int i(0); i<modes.size()/3.0; i++)
-    {
+    for (int i(0); i<modes.size()/3.0; i++) {
         flux << "[" << modes[3*i] << "," << modes[3*i+1] << "]" << " ; "
-            << compute_orientation(h_ac,modes[3*i],modes[3*i+1]) << " ; "
-            << modes[3*i+2] << endl;
+             << compute_orientation(h_ac,modes[3*i],modes[3*i+1]) << " ; "
+             << modes[3*i+2] << endl;
     }
     flux.close();
 
@@ -103,16 +101,15 @@ int main(int c, char *v[])
     float max_histo = h_lowe.max();
 
     for (int i(0); i<n_bins; i++)
-        if ((h_lowe[i] > 0.8*max_histo) && (h_lowe[i] > h_lowe[i-1]) && (h_lowe[i] > h_lowe[i+1])) 
-	    maxima.push_back(i);
+        if ((h_lowe[i] > 0.8*max_histo) && (h_lowe[i] > h_lowe[i-1]) && (h_lowe[i] > h_lowe[i+1]))
+            maxima.push_back(i);
 
     // Save orientations associated to local maxima
     flux.open("modes_lowe.txt");
-    for (size_t i(0); i<maxima.size(); i++)
-    {
+    for (size_t i(0); i<maxima.size(); i++) {
         flux <<  "[" << maxima[i] << "," << maxima[i] << "]" << " ; "
-        << h_lowe.angle(maxima[i],1) << " ; "
-        << h_lowe[maxima[i]]/max_histo << endl;
+             << h_lowe.angle(maxima[i],1) << " ; "
+             << h_lowe[maxima[i]]/max_histo << endl;
     }
     flux.close();
 

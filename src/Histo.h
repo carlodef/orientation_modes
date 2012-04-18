@@ -6,7 +6,7 @@ using namespace std;
 
 class Histo
 {
-    public :
+public :
 
     /**
     * Constructors
@@ -28,7 +28,9 @@ class Histo
     int get_N() const;
     float get_M() const;
     float *get_data() const;
-    float operator[](int i) const {return this->m_data[good_modulus(i,m_L)];};
+    float operator[](int i) const {
+        return this->m_data[good_modulus(i,m_L)];
+    };
 
     /**
     * Infos
@@ -49,7 +51,7 @@ class Histo
     */
     static int good_modulus(int n, int p);
 
-    private :
+private :
 
     int const m_L; // number of bins
     int const m_N; // L(L-1)+1

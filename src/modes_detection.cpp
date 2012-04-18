@@ -53,25 +53,20 @@ Histo histo_orientation(float *im, int nx, int ny, int x, int y, int r, int L, i
     Histo histo(L);
     int count(0);
 
-    if (flag_gauss)
-    {
+    if (flag_gauss) {
         float sigma = 1.5*r;
         // Loop over all the pixels in a big square window around the keypoint
-        for (int i = max(1,(int) (x-3*sigma)); i <= min((int) (x+3*sigma),nx-2); i++)
-        {
-            for (int j = max(1,(int) (y-3*sigma)); j <= min((int) (y+3*sigma),ny-2); j++)
-            {
+        for (int i = max(1,(int) (x-3*sigma)); i <= min((int) (x+3*sigma),nx-2); i++) {
+            for (int j = max(1,(int) (y-3*sigma)); j <= min((int) (y+3*sigma),ny-2); j++) {
                 // The contributing pixels are in a circle centered in (x,y)
-                if ((i-x)*(i-x)+(j-y)*(j-y) <= 9*sigma*sigma)
-                {
+                if ((i-x)*(i-x)+(j-y)*(j-y) <= 9*sigma*sigma) {
                     // Computation of the gradient : the pixel of coordinates (k,l)
                     // is stored in im[l*nx+k]
                     float gx = im[j*nx+i+1]-im[j*nx+i-1];
                     float gy = -im[(j+1)*nx+i]+im[(j-1)*nx+i];
                     float norm = sqrtf(gx*gx+gy*gy);
 
-                    if (flag_norm)
-                    {
+                    if (flag_norm) {
                         count++; // We count the number of points which contribute to the histogram
 
                         // Computation of the angle and the associated bin
@@ -83,10 +78,8 @@ Histo histo_orientation(float *im, int nx, int ny, int x, int y, int r, int L, i
                         histo.incr(bin,norm*exp(-((i-x)*(i-x)+(j-y)*(j-y))/(2*sigma*sigma)));
                     }
 
-                    else
-                    {
-                        if (norm > 3*sqrt(2))
-                        {
+                    else {
+                        if (norm > 3*sqrt(2)) {
                             count++;
 
                             // Computation of the angle and the associated bin
@@ -103,24 +96,19 @@ Histo histo_orientation(float *im, int nx, int ny, int x, int y, int r, int L, i
         }
     }
 
-    else
-    {
+    else {
         // Loop over all the pixels in a square window around the keypoint
-        for (int i = max(1,(x-r)); i <= min((x+r),nx-2); i++)
-        {
-            for (int j = max(1,(y-r)); j <= min((y+r),ny-2); j++)
-            {
+        for (int i = max(1,(x-r)); i <= min((x+r),nx-2); i++) {
+            for (int j = max(1,(y-r)); j <= min((y+r),ny-2); j++) {
                 // The contributing pixels are in a circle centered in (x,y)
-                if ((i-x)*(i-x)+(j-y)*(j-y) <= r*r)
-                {
+                if ((i-x)*(i-x)+(j-y)*(j-y) <= r*r) {
                     // Computation of the gradient : the pixel of coordinates (k,l)
                     // is stored in im[l*nx+k]
                     float gx = im[j*nx+i+1]-im[j*nx+i-1];
                     float gy = -im[(j+1)*nx+i]+im[(j-1)*nx+i];
                     float norm = sqrtf(gx*gx+gy*gy);
 
-                    if (flag_norm)
-                    {
+                    if (flag_norm) {
                         count++; // We count the number of points which contribute to the histogram
 
                         // Computation of the angle and the associated bin
@@ -132,18 +120,16 @@ Histo histo_orientation(float *im, int nx, int ny, int x, int y, int r, int L, i
                         histo.incr(bin,norm);
                     }
 
-                    else
-                    {
-                        if (norm > 3*sqrt(2))
-                        {
+                    else {
+                        if (norm > 3*sqrt(2)) {
                             count++;
 
                             // Computation of the angle and the associated bin
                             float theta = atan2f(gy,gx);
                             int bin = floor((L/(2*M_PI))*(theta+M_PI+M_PI/L));
                             // If theta=M_PI, we are in the bin number L which is the bin 0
-                            if (bin == L) bin = 0;
-
+                            if (bin == L)
+                                bin = 0;
                             histo.incr(bin);
                         }
                     }
@@ -174,8 +160,7 @@ vector<float> max_modes_detection(Histo &histo, float epsilon)
     vector<float> list;
 
     // If the histogram is empty (M=0), it's done (there are no modes)
-    if (histo.get_M() > 0)
-    {
+    if (histo.get_M() > 0) {
 
         int L(histo.get_L());
 
@@ -202,12 +187,9 @@ vector<float> max_modes_detection(Histo &histo, float epsilon)
 
         // Now we put in "list" the maximal modes corresponding
         // to coefficients > 1 in the matrix "intervals"
-        for (int a=0; a<L; a++)
-        {
-            for (int b=0; b<L; b++)
-            {
-                if (intervals[a][b] > 1)
-                {
+        for (int a=0; a<L; a++) {
+            for (int b=0; b<L; b++) {
+                if (intervals[a][b] > 1) {
                     list.push_back(a);
                     list.push_back(b);
 
@@ -224,8 +206,7 @@ vector<float> max_modes_detection(Histo &histo, float epsilon)
         }
 
         // Clear memory
-        for (int i=0; i<L; i++)
-        {
+        for (int i=0; i<L; i++) {
             delete intervals[i];
             delete entropy[i];
         }
@@ -252,10 +233,8 @@ void browse_intervals(Histo &histo, float epsilon, int **intervals, float **entr
     int N = histo.get_N();
     float thresh = log(N/epsilon)/M;
 
-    for (int a=0; a<L; a++)
-    {
-        for (int b=0; b<L; b++)
-        {
+    for (int a=0; a<L; a++) {
+        for (int b=0; b<L; b++) {
             // Compute k,r,p,e
             int k = histo.sum(a,b);
             float r = (float) k/M;
@@ -266,14 +245,12 @@ void browse_intervals(Histo &histo, float epsilon, int **intervals, float **entr
             entropy[a][b] = e;
 
             // Memorize if the interval [a,b] is a meaningful interval or gap
-            if (e>thresh)
-            {
+            if (e>thresh) {
                 if (r>p)
                     intervals[a][b] = 2;
                 else
                     intervals[a][b] = -1;
-            }
-            else
+            } else
                 intervals[a][b] = 0;
         }
     }
@@ -285,11 +262,9 @@ void browse_intervals(Histo &histo, float epsilon, int **intervals, float **entr
 void spread_gaps(int L, int **intervals)
 {
     // loop over all the lines of the matrix intervals
-    for (int a(0); a<L; a++)
-    {
+    for (int a(0); a<L; a++) {
         // the loop over the columns is separated in two parts
-        for (int b(0); b<a; b++)
-        {
+        for (int b(0); b<a; b++) {
             if (intervals[a][b] < 0)
                 for (int i(a); i>b; i--)
                     for (int j(b); j<i; j++)
@@ -297,14 +272,13 @@ void spread_gaps(int L, int **intervals)
         }
 
         // second part
-        for (int b(a); b<L; b++)
-        {
+        for (int b(a); b<L; b++) {
             if (intervals[a][b] < 0)
                 for (int i(a); i>(b-L); i--)
                     for (int j(b); j<(i+L); j++)
-                        intervals[(i+L) % L][j % L] = 0; 
-			// (i+L) instead of i because the modulo operator %i
-			// doesn't like negative entries
+                        intervals[(i+L) % L][j % L] = 0;
+            // (i+L) instead of i because the modulo operator %i
+            // doesn't like negative entries
         }
     }
 }
@@ -316,29 +290,24 @@ void spread_gaps(int L, int **intervals)
 void discard_modes(int L, int **intervals, float **entropy)
 {
     // loop over all the lines of the matrix intervals
-    for (int a(0); a<L; a++)
-    {
+    for (int a(0); a<L; a++) {
         // the loop over the columns is separated in two parts
-        for (int b(a); b<L; b++)
-        {
-            if (intervals[a][b] > 1) // [a,b] is a possible maximal mode
-            {
+        for (int b(a); b<L; b++) {
+            if (intervals[a][b] > 1) {
+                // [a,b] is a possible maximal mode
                 float e(entropy[a][b]);
                 int i(a);
 
-                while (i<=b)
-                {
+                while (i<=b) {
                     int j(b);
-                    while (j>=i)
-                    {
-                        if ((j-i < b-a) && (intervals[i][j] > 0))
+                    while (j>=i) {
+                        if ((j-i < b-a) && (intervals[i][j] > 0)) {
                             // [i,j] is a sub-mode strictly included in [a,b]
-                        {
                             if (entropy[i][j] < e)
                                 intervals[i][j] = 1;
                             else
-                                intervals[a][b] = 1;
                                 // [a,b] is not a maximal mode
+                                intervals[a][b] = 1;
                         }
                         j--;
                     }
@@ -348,21 +317,17 @@ void discard_modes(int L, int **intervals, float **entropy)
         }
 
         // second part
-        for (int b(0); b<a; b++)
-        {
-            if (intervals[a][b] > 1) // [a,b] is a possible maximal mode
-            {
+        for (int b(0); b<a; b++) {
+            if (intervals[a][b] > 1) {
+                // [a,b] is a possible maximal mode
                 float e(entropy[a][b]);
                 int i(a);
 
-                while (i<=(b+L))
-                {
+                while (i<=(b+L)) {
                     int j(b);
-                    while (j>=(i-L))
-                    {
-                        if (((j-i+L)%L < (b-a+L)%L) && (intervals[i % L][(j+L) % L] > 0))
+                    while (j>=(i-L)) {
+                        if (((j-i+L)%L < (b-a+L)%L) && (intervals[i % L][(j+L) % L] > 0)) {
                             // [i,j] is a sub-mode strictly included in [a,b]
-                        {
                             if (entropy[i % L][(j+L) % L] < e)
                                 intervals[i % L][(j+L) % L] = 1;
                             else
@@ -384,7 +349,7 @@ float compute_entropy(float r, float p)
 {
     if (r==1)
         return -log(p);
-    
+
     float h = r*log(r/p)+(1-r)*log((1-r)/(1-p));
     return h;
 }
@@ -411,8 +376,7 @@ float compute_orientation(Histo &h, int a, int b)
     if (a <= b)
         for (int i(a); i<=b; i++)
             theta += h.angle(i)*h[i];
-    else
-    {
+    else {
         // We compute the weighted average mod 2*PI
         for (int i(a); i<h.get_L(); i++)
             theta += h.angle(i)*h[i];
