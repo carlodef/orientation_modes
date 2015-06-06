@@ -61,6 +61,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
+#include <string.h>
 
 #include <png.h>
 
